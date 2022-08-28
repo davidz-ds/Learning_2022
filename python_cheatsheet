@@ -1,0 +1,398 @@
+==== Python Basic Learning Note ====
+
+
+*** Tricks ***
+--- COMMENTS
+cmd+/ -> comments all
+
+"""
+"""   -> comment all paragraphs
+
+--- Last digit of a number
+a % 10
+
+--- copy a list 
+result = sentence[:]
+
+% # magic 
+
+--- print a string with variable value
+print(f"you have {cheese_count} cheeses!")
+
+---
+p = []
+print(*p)
+
+---
+magic functions
+% matplotlib inline
+
+pd.options.display.max_rows = 99
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*** Useful functions ***
+
+map(function,iterable) - return list
+--- map(square,[1,2,3,4,5])
+
+str() - convert to string
+--- str(a)
+
+type() - check the variable type
+
+range() - generate a list
+range(3) gives [0,1,2]
+range(0,20,2) gives [0,2,4,6...18]
+range(5,0,-1) gives [5,4,3,2,1]
+
+Lambda - 
+--- lambda x:x*2
+--- map(lambda x : x['name'],dict)
+
+filter() - return list
+--- filter(function_object, iterable)
+
+------------------------------------------------------------------------- Python Common Data Type  -----------------------------------------------------------------------------------------------
+*** Variables ***
+tuples - cannot change value, but the cell can change value 
+--- tup = (4,5,6)
+a,b,c = tup
+
+list - can change size and can be different values.
+--- function: append,insert,pop,in,extend,sort,
+--- seq[1:5], seq[:5],seq[1:],seq[-1:],seq[-6,-2],seq[::2]
+--- inverse the list: seq[::-1]
+
+dictionary - with key and value
+--- dict = {}
+---mapping = {} - to construct a dictionary
+for i,v in enumerate(some_list):
+	mapping[v] = i
+--- function pop,del
+--- dict.keys(),dict.values() - to find dictionary key and value
+
+fast expression
+--- list = [x.upper() for x in strings if len(x)>2]
+--- dict = {len}
+
+Series
+obj = pd.Series([1,2,3,4,5])
+obj2 = pd.Series([1,2,3,4,5], index = [])
+
+
+to construct a dataframe
+data = pd.DataFrame(np.arrange(6).reshape((2,3)),
+					index = pd.Index(['A','B'],name = 'state'),
+					columns = pd.Index(['one','two','three'], name = 'number'))
+
+
+----------------------------------------------------------------------- Python In General -------------------------------------------------------------------------------------------------
+print(f"you have {cheese_count} cheeses!")
+
+# string
+str_var = 'AAAA'
+
+# increment
+x += 1 -> x= x+1
+
+# if statement
+if people > cats:
+	print("statements_A")
+elif people < cats:
+	print("statement_B")
+else:
+	print("statement_C")
+
+
+--- for loop 
+for i in list:
+	print(f "it is {i}")
+
+for i in range(0,10):
+	print(f"ssss")
+
+for i in range(4):
+	print(i)
+
+--- while loop
+i = 0 
+while i <10:
+	print("something")
+	i +=1
+
+# functions
+def function():
+	print("anything")
+
+def return_fun(a,b):
+	return a+b
+
+def function(a):
+	return sorted(a)
+
+# MODULES
+# mystuff.py
+def apple():
+	print("this is an apple")
+---------------
+import mystuff
+mystuff.affple()
+
+# CLASS
+class Song(object):
+	# object constructor
+	def _init_(self,lyrics):
+		self.lyrics = "lyrics"
+	# method
+	def sing_me_a_song(self):
+		for line in self.lyrics:
+			print(line)
+
+# CREATE OBJECT
+parade = Song(["A","B","C"])
+
+
+--------------- functions --------------- 
+1. 
+def polygon_perimeter(n_sides, side_len):
+def polygon_apothem(n_sides, side_len):
+def polygon_area(n_sides, side_len):
+    perimeter = polygon_perimeter(n_sides, side_len)
+    apothem = polygon_apothem(n_sides, side_len)
+	return perimeter * apothem / 2
+2. 
+--------------------------------------------------------------------------- Library ---------------------------------------------------------------------------------------------
+
+
+******************************************************************************* NUMPY *******************************************************************************
+
+构建数组，数组中元素类型相同
+data = np.random.randn(2,3)
+data = np.arange(15)
+
+FUNCTIONS:
+
+--- .array(list)
+np.array(list)
+
+--- .astype(np.float64)
+
+--- np.arrange(10) - randomly generate 1 dimensional array
+
+--- .copy() - completely generate a same np list
+
+--- data[data<0] = 0
+
+--- .reshape()
+np.arange(10).reshape((3,5))
+
+--- arr.sum(),arr.mean(),arr.
+
+--- np.where()
+
+******************************************************************************* PANDAS ********************************************************************************
+
+import pandas as pd
+from pandas import Series, DataFrame
+series = pd.Series() -- series contains index and value
+series.index, series.value, series.name
+SERIES FUNCTIONS:
+--- .isnull()
+pd.isnull(series)
+
+
+df = pd.DatatFrame(data) -- dataframe can be constructured by numpy or dictionary. It contains index and value
+df = pd.DataFrame(data,columns = ['A','B','C','D'],index = ['one','two','three'])
+DATAFRAME FUNCTIONS:
+--- index method: df['A'], df.A, df.columns, df.columns.name, df.T, df.index, df.index.name, df.values
+--- del : delete column
+e.g.
+del df['A']
+--- index and filtering: data[data['A']>9]
+--- loc & iloc
+loc select column and row name, iloc select the index from the dataframe
+e.g.
+data.iloc[:,:3][data.three>5]
+--- apply() : only for column or row
+df.apply(f,axis = 'colimns')
+--- applymap() : for every data in the frame
+*--- map(): ONLY for series
+--- .drop()
+df.drop(['A','B'],axis=1,inplace = True)
+--- .sort_index() : sort the dataframe by index
+df.sort_index(axis=1,ascending = False)
+--- .index.is_unique : to find out if dataframe index is unique
+--- .sum()
+df.sum(axis='columns')
+--- .mean()
+df.mean(axis='columns',skipna = False)
+--- .idxmax(), idxmin() : return the index of the max,min values
+df.idmax()
+--- unique() : classify the value
+df.unique()
+
+
+******************************************************************************* Parallel Computing& Big Data Technique ********************************************************************************
+# the Pool library 
+@print_timing
+def parallel_apply(apply_func, groups, nb_cores):
+    with Pool(nb_cores) as p:
+        results = p.map(apply_func, groups)
+    return pd.concat(results)
+
+# Dask
+import dask.dataframe as dd
+# Set the number of pratitions
+athlete_events_dask = dd.from_pandas(athlete_events, npartitions = 4)
+# Calculate the mean Age per Year
+print(athlete_events_dask.groupby('Year').Age.mean().compute())
+
+
+# Apache Pipeline
+# Create the DAG object
+dag = DAG(dag_id="car_factory_simulation",
+          default_args={"owner": "airflow","start_date": airflow.utils.dates.days_ago(2)},
+          schedule_interval="0 * * * *")
+
+etl_task = PythonOperator(task_id = "etl_task",python_callable = etl,dag=dag)
+etl_task.set_upstream(wait_for_this_task)
+
+
+# Task definitions
+assemble_frame = BashOperator(task_id="assemble_frame", bash_command='echo "Assembling frame"', dag=dag)
+place_tires = BashOperator(task_id="place_tires", bash_command='echo "Placing tires"', dag=dag)
+assemble_body = BashOperator(task_id="assemble_body", bash_command='echo "Assembling body"', dag=dag)
+apply_paint = BashOperator(task_id="apply_paint", bash_command='echo "Applying paint"', dag=dag)
+
+# Complete the downstream flow
+assemble_frame.set_downstream(place_tires)
+assemble_frame.set_downstream(assemble_body)
+assemble_body.set_downstream(apply_paint)
+
+
+
+
+******************************************************************************* Database ETL ********************************************************************************+++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  Extract Data ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+# SQL database ETL
+# Function to extract table to a pandas DataFrame
+def extract_table_to_pandas(tablename, db_engine):
+    query = "SELECT * FROM {}".format(tablename)
+    return pd.read_sql(query, db_engine)
+
+# Connect to the database using the connection URI
+connection_uri = "postgresql://repl:password@localhost:5432/pagila" 
+db_engine = sqlalchemy.create_engine(connection_uri)
+user1 = pd.read_sql("SELECT * FROM rating WHERE user_id = 4387", db_engine)
+
+# Extract the film table into a pandas DataFrame
+extract_table_to_pandas("film", db_engine)
+
+# Extract the customer table into a pandas DataFrame
+extract_table_to_pandas("customer", db_engine)
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  Transform Data & Pyspark ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+import pyspark.sql
+spark = pyspark.sql.SparkSession.builder.getOrCreate()
+spark.read.jdbc("jdbc:postgresql://localhost:5432/pagila",
+                "customer",
+                {"user":"repl","password":"password"})
+
+- Split Data
+
+# Get the rental rate column as a string
+rental_rate_str = film_df.rental_rate.astype(str)
+# Split up and expand the column
+rental_rate_expanded = rental_rate_str.str.split('.', expand=True)
+# Assign the columns to film_df
+film_df = film_df.assign(
+    rental_rate_dollar=rental_rate_expanded[0],
+    rental_rate_cents=rental_rate_expanded[1],
+)
+
+# Use groupBy and mean to aggregate the column
+ratings_per_film_df = rating_df.groupBy('film_id').mean('rating')
+
+# Join the tables using the film_id column
+film_df_with_ratings = film_df.join(
+    ratings_per_film_df,
+    film_df.film_id==ratings_per_film_df.film_id
+)
+# Show the 5 first results
+print(film_df_with_ratings.show(5))
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  Loading ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+# load to the column database
+df.to_parquet()
+df.write.parquet()
+
+# load to the row database (AMAZON REDSHIFT S3)
+recommendations = transform_find_recommendatins(ratings_df)
+recommendations.to_sql("recommendations",db_engine,schema="store",if_exists = "replace")
+
+# Finish the connection URI
+connection_uri = "postgresql://repl:password@localhost:5432/database"
+db_engine_dwh = sqlalchemy.create_engine(connection_uri)
+# Transformation step, join with recommendations data
+film_pdf_joined = film_pdf.join(recommendations)
+# Finish the .to_sql() call to write to store.film
+film_pdf_joined.to_sql("film", db_engine_dwh, schema="store", if_exists="replace")
+# Run the query to fetch the data
+pd.read_sql("SELECT film_id, recommended_film_ids FROM store.film", db_engine_dwh)
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  ETL table ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+# extract data from the original database 
+
+
+
+
+# Loading data back to database
+connection_uri = "postgresql://repl:password@localhost:5432/dwh"
+db_engine = sqlalchemy.create_engine(connection_uri)
+def load_to_dwh(recommendations):
+    recommendations.to_sql("recommendations", db_engine, if_exists=="replace")
+
+
+
+
+# Creating the DAG
+
+
+
+
+
+Porject A ==============================================================================================================================
+
+# identify the maximum and minimum value of the identified variable 
+print(df['Total Consumer Charges'].astype(float).min())
+print(df['Total Consumer Charges'].astype(float).max())
+
+
+# data tranformation & remove the semi coolums
+df['Total Payments Received'] = df['Total Payments Received'].astype(str)
+df['Total Payments Received'] = df['Total Payments Received'].apply(lambda x:x.replace(',',''))
+df['Total Payments Received']
+
+# define the segment range for the variable
+df['Total Merchant Charges'] = df['Total Merchant Charges'].astype(float)
+df['tmc_Seg_Level'] = df['Total Merchant Charges'].astype(int)
+df['tmc_Seg_Level'] = df['tmc_Seg_Level'].apply(of_Seg)
+df['tmc_Seg_Level']
+
+# find the precentage of the variable 
+df_OF_Pct = df[['OF_Seg_Level','Other Fees']]
+df_OF_Pct = df_OF_Pct.groupby('OF_Seg_Level').size()
+df_OF_Pct = pd.DataFrame({'OF_Seg_Level':df_OF_Pct.index,'Quality':df_OF_Pct.values})
+df_OF_Pct['Percent'] = df_OF_Pct['Quality']/276546
+df_OF_Pct
+
+# plot
+ax = sns.barplot(x = 'Signed_Year', y = 'Quality', data = df_ContbyYear)
+ax.set_title('App pricing trend across categories')
+ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+
+
+Tricks ==============================================================================================================================
+df_main['SALE_PRICE'] =df_main.apply(lambda x:price_calc(x['PDT_MODEL'],x['TOTAL_LENGTH'],x['TOTAL_QTY']),axis=1)
