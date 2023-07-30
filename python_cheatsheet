@@ -1,3 +1,9 @@
+==== Basic Library ====
+import pandas # Import a package without an alias
+import pandas as pd # Import a package with an alias
+from pandas import DataFrame # Import an object from a package
+
+
 ==== Python Basic Learning Note ====
 
 
